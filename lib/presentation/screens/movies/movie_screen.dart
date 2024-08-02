@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
@@ -164,28 +165,30 @@ class _ActorsByMovie extends ConsumerWidget {
           return Container(
             padding: const EdgeInsets.all(8.0),
             width: 135,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    actor.profilePath,
-                    height: 180,
-                    width: 135,
-                    fit: BoxFit.cover,
+            child: FadeInRight(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+              
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      actor.profilePath,
+                      height: 180,
+                      width: 135,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-
-                const SizedBox(height: 5,),
-
-                Text(actor.name, maxLines: 2,),
-                Text(actor.character ?? '', maxLines: 2,
-                  style: const TextStyle(fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),
-                ),
-
-              ],
+              
+                  const SizedBox(height: 5,),
+              
+                  Text(actor.name, maxLines: 2,),
+                  Text(actor.character ?? '', maxLines: 2,
+                    style: const TextStyle(fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),
+                  ),
+              
+                ],
+              ),
             ),
           );
         },
@@ -221,23 +224,29 @@ class _CustomSliverAppBar extends StatelessWidget {
         background: Stack(
           children: [
             SizedBox.expand(
-              child: Image.network(movie.posterPath, fit: BoxFit.cover,),              
+              child: Image.network(
+                movie.posterPath, fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if(loadingProgress != null) return const SizedBox();
+                  return FadeIn(child: child);
+                },
+              ),              
             ),
 
-            // const SizedBox.expand(
-            //   child: DecoratedBox(
-            //     decoration: BoxDecoration(
-            //       gradient: LinearGradient(
-            //         begin: Alignment.topCenter,
-            //         end: Alignment.bottomCenter,
-            //         stops: [0.7, 1.0],
-            //         colors: [
-            //           Colors.transparent, 
-            //           Colors.black87,
-            //         ])
-            //     ),
-            //   ),
-            // ),
+            const SizedBox.expand(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.7, 1.0],
+                    colors: [
+                      Colors.transparent, 
+                      Colors.black87,
+                    ])
+                ),
+              ),
+            ),
 
             const SizedBox.expand(
               child: DecoratedBox(
